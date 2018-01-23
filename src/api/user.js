@@ -1,10 +1,19 @@
 // @flow
-export default (username: string, password: string) : any => {
+
+
+interface Usuario {
+    id: number,
+    name: string,
+    username: string,
+    password: string
+}
+
+export default (username: string, password: string) : Promise<any> => {
     return new Promise( (resolve, reject) => {
         users.filter((current, key) => {
 
             if(current.username == username && current.password == password){
-                resolve(current);
+                resolve({id: current.id, name: current.name});
                 return true;
             }else{
                 if(users.length-1 == key){
@@ -17,12 +26,6 @@ export default (username: string, password: string) : any => {
     })
 }
 
-interface Usuario {
-    id: number,
-    name: string,
-    username: string,
-    password: string
-}
 
 const users : Array<Usuario> = [
     {

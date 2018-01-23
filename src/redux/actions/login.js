@@ -8,6 +8,11 @@ type PromiseAction = Promise<Action>;
 type ThunkAction = (dispatch: Dispatch) => any;
 type Dispatch = (action: Action | ThunkAction | PromiseAction | Array<Action>) => any
 
+interface userLog {
+    id: number,
+    name: string
+}
+
 export function logout() : Action {
     return {
         type: LOGOUT,
@@ -15,12 +20,10 @@ export function logout() : Action {
     }
 }
 
-
-
 export function loginRequest(username : string, psw: string){
     return (dispatch:Dispatch) => {
         return userFetch(username, psw)
-        .then( userData => {
+        .then( (userData : userLog) => {
             dispatch(setCurrentUser(userData));
             return {success: true, error: null};
         })
@@ -30,7 +33,7 @@ export function loginRequest(username : string, psw: string){
     }
 }
 
-export function setCurrentUser(user: {id: number, name: string}): Action{
+export function setCurrentUser(user: userLog): Action{
     return {
         type: SET_CURRENT_USER,
         payload: {
