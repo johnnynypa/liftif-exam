@@ -8,7 +8,7 @@ import { Provider } from 'react-redux';
 import Home from './containers/home';
 import Login from './containers/login';
 
-import store from './redux/store';
+import store from './redux/store'
 
 const App = (
 	<Provider store={store}>

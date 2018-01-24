@@ -1,8 +1,11 @@
 // @flow
-
+// Dependencias
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+
+import '../styles/homePage.css';
+import HomeForm from '../components/homeForm';
 
 type Props = {
     login: {
@@ -26,8 +29,19 @@ class Home extends Component<Props, State>  {
 
     render() {
         return (
-            <div>
-                Home
+            <div className="homePage">
+                <div className="diagonal" id="diag1"></div>
+                <div className="diagonal" id="diag2" />
+                <div className="diagonal" id="diag3" />
+                <div className="diagonal" id="diag4" />
+                <div className="diagonal" id="diag5" />
+                <div className="diagonal" id="diag6" />
+                <div className="diagonal" id="diag7" />
+                <div className="diagonal" id="diag8" />
+
+                <div className="home-page-container" >
+                    <HomeForm />
+                </div>
             </div>
         )
     }

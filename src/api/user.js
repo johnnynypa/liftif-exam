@@ -10,6 +10,7 @@ interface Usuario {
 
 export default (username: string, password: string) : Promise<any> => {
     return new Promise( (resolve, reject) => {
+        // eslint-disable-next-line
         users.filter((current, key) => {
 
             if(current.username === username && current.password === password){

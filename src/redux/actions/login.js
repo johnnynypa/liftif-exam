@@ -5,6 +5,7 @@ import userFetch from '../../api/user';
 
 type Action = {type: string, payload: Object}
 type PromiseAction = Promise<Action>;
+// eslint-disable-next-line
 type Dispatch = (action: Action | ThunkAction | PromiseAction | Array<Action>) => any
 type ThunkAction = (dispatch: Dispatch) => any;
 
@@ -39,6 +40,8 @@ export function loginRequest(username : string, psw: string) : Promise {
 }
 
 export function setCurrentUser(user: userLog): Action{
+    localStorage.setItem('loginId', user.id );
+    localStorage.setItem('loginName', user.name );
     return {
         type: SET_CURRENT_USER,
         payload: {
