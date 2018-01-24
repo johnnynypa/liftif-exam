@@ -5,8 +5,9 @@ import userFetch from '../../api/user';
 
 type Action = {type: string, payload: Object}
 type PromiseAction = Promise<Action>;
-type ThunkAction = (dispatch: Dispatch) => any;
 type Dispatch = (action: Action | ThunkAction | PromiseAction | Array<Action>) => any
+type ThunkAction = (dispatch: Dispatch) => any;
+
 
 interface userLog {
     id: number,
@@ -20,17 +21,21 @@ export function logout() : Action {
     }
 }
 
-export function loginRequest(username : string, psw: string){
-    return (dispatch:Dispatch) => {
-        return userFetch(username, psw)
-        .then( (userData : userLog) => {
-            dispatch(setCurrentUser(userData));
-            return {success: true, error: null};
+export function loginRequest(username : string, psw: string) : Promise {
+    return userFetch(username, psw)
+    .then( (userData : userLog) => {
+
+        return new Promise( (resolve) => {
+
+            if(userData.error){
+                resolve({success: false, error: userData.error});
+            }else{
+                resolve({success: true, error: null, user: userData});
+            }
+
         })
-        .catch( (error: string) => {
-            return {success: false, error: error}
-        } )
-    }
+
+    })
 }
 
 export function setCurrentUser(user: userLog): Action{

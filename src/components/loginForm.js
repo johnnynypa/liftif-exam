@@ -1,15 +1,16 @@
 // @flow
 // Dependencies
 import React, {Component} from 'react';
-import {bindActionCreators, Action } from 'redux';
 import {connect} from 'react-redux';
+import PropTypes from 'prop-types';
 
 import InputFloatingLabel from './inputFloatingLabel';
-import { loginRequest } from '../redux/actions/login';
+import { loginRequest, setCurrentUser } from '../redux/actions/login';
 import '../styles/loginForm.css';
 
+
 type Props = {
-    loginRequest: Action
+    setCurrentUser: Function
 }
 
 type State = {
@@ -25,9 +26,9 @@ class LoginForm extends Component<Props, State>{
             username : "",
             password : ""
         }
-        
-        this.onChange = this.onChange.bind(this);
-        this.onSubmit = this.onSubmit.bind(this);
+        const self: any = this;
+        self.onChange = this.onChange.bind(this);
+        self.onSubmit = this.onSubmit.bind(this);
     }
 
     
@@ -39,6 +40,13 @@ class LoginForm extends Component<Props, State>{
 
     onSubmit(e:any){
         e.preventDefault();
+        loginRequest(this.state.username, this.state.password)
+        .then( ({success, error, user} )=> {
+            if(success){
+                this.props.setCurrentUser(user);
+                this.context.router.history.push('/');
+            }
+        })
     }
 
     render(){
@@ -68,10 +76,9 @@ class LoginForm extends Component<Props, State>{
         );
     }
 }
-function mapDispatchToProps(dispatch){
-    return {
-        loginRequest: bindActionCreators(loginRequest, dispatch)
-    }
+
+LoginForm.contextTypes = {
+    router : PropTypes.object.isRequired
 }
 
-export default connect(null, mapDispatchToProps)(LoginForm);
+export default connect(null, {setCurrentUser})(LoginForm);

@@ -1,31 +1,50 @@
+// @flow
 //Dependencies
 import React from 'react';
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 
 import '../styles/inputFloatingLabel.css';
 
-class FloatingLabel extends React.Component {
-	
-	_bind(...methods) {
-		methods.map(method => this[method] = this[method].bind(this));
-	}
-	constructor(props) {
+type Props = {
+	placeholder: string,
+    type: string,
+    id: string,
+    isDisabled: boolean,
+    onChange: Function,
+	value: string,
+	name: string
+}
+
+type State = {
+	hasValue : boolean,
+	hasError : boolean
+}
+
+class FloatingLabel extends React.Component<Props, State> {
+
+
+	static defaultProps = {
+		type: 'text',
+		isDisabled: false,
+		placeholder: 'name'
+	};
+
+	constructor(props:Props) {
 		super(props)
 		this.state = { hasValue: false, hasError: false };
-		this._bind('onBlur');
+		const self: any = this;
+		self.onBlur = this.onBlur.bind(this);
 	}
 
-	onBlur(event) {
+	onBlur(event:any) {
 		this.setState({ hasValue: Boolean(event.currentTarget.value) });
 	}
 
 	render() {
-		const { errorMsg, id, isDisabled, pattern, placeholder, type, name, value, onChange } = this.props;
+		const { id, isDisabled, placeholder, type, name, value, onChange } = this.props;
 		const { hasValue, hasError } = this.state;
 
 		const inputClasses = classNames('fl-input', { 'fl-valid': hasValue && !hasError }, { 'fl-invalid': hasValue && hasError });
-		const errMsgClasses = classNames({ 'fl-error-msg': errorMsg }, { 'fl-error-show': (hasError && hasValue) && (errorMsg && pattern) });
 
 		return (
 			<div className='fl-input-container'>
@@ -41,26 +60,9 @@ class FloatingLabel extends React.Component {
 				/>
 				<label className='fl-input-label' htmlFor={id}>{placeholder}</label>
 				<span className='fl-input-bar'></span>
-				{errorMsg && <span className={errMsgClasses}>{errorMsg}</span>}
 			</div>
 		);
 	}
 }
-
-FloatingLabel.PropTypes = {
-    placeholder: PropTypes.string.isRequired,
-    type: PropTypes.string.isRequired,
-    id: PropTypes.string.isRequired,
-    isDisabled: PropTypes.bool,
-    onChange: PropTypes.func.isRequired,
-	value: PropTypes.string.isRequired,
-	name: PropTypes.string.isRequired
-}
-
-FloatingLabel.defaultProps = {
-	type: 'text',
-	isDisabled: false,
-	placeholder: 'name'
-};
 
 export default FloatingLabel;
